@@ -1,7 +1,7 @@
 # Anon.py
 Library for creating chatbots and automating account actions in the Anon social network
 
-### Echo bot
+### Simple chat bot
 ```python3
 from botanon import AnonClient
 from botanon import ChatMessage
