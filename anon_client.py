@@ -34,7 +34,11 @@ class AnonClient:
     The main class used to interact with Anon
     """
 
-    def __init__(self, connect_websocket: bool = True, prefix: str = "", proxy: Optional[str] = None) -> None:
+    def __init__(self,
+                 connect_websocket: bool = True,
+                 prefix: str = "",
+                 proxy: Optional[str] = None,
+                 ws_debug: bool = False) -> None:
         self._anon_http = AnonHTTP()
         self._rocket_http = RocketHTTP()
         self.token = None
@@ -45,6 +49,7 @@ class AnonClient:
         self._handlers = []
         self.connect = connect_websocket
         self.prefix = prefix
+        self.ws_debug = ws_debug
 
     def _set_account(self, info: AccountInfo) -> None:
         self.token = info.token
@@ -66,7 +71,7 @@ class AnonClient:
 
     async def _create_connection(self, info: AccountInfo):
         lp = new_event_loop()
-        self.listener = WebSocketListener(info.rocket_id, info.rocket_token, lp)
+        self.listener = WebSocketListener(info.rocket_id, info.rocket_token, lp, self.ws_debug)
         Thread(target=lp.run_forever).start()
         lp.create_task(self.listener.start())
         for handler in self._handlers: self.listener.add_event_handler(handler)
