@@ -9,7 +9,7 @@ from botanon import MESSAGE_TYPE_USER_KICKED
 import asyncio
 
 
-client = botanon.AnonClient(prefix="/")
+client = AnonClient(prefix="/")
 
 
 @client.on_command("ping")
