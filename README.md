@@ -17,9 +17,7 @@ async def handle_ping(c: AnonClient, message: ChatMessage):
 @client.on_command("photo")
 async def handle_photo(c: AnonClient, message: ChatMessage):
     info = await c.get_user(message.sender.anon_fields.anonym_id)
-    photo_text = info.photo.data.original.url
-                 if info.photo is not None
-                 else "У тебя нет профильного фото"
+    photo_text = info.photo.data.original.url if info.photo is not None else "У тебя нет профильного фото"
     await c.send_message(message.room_id, photo_text)
 
 @client.on_command("fake-kick")
