@@ -23,7 +23,7 @@ async def handle_photo(c: AnonClient, message: ChatMessage):
 @client.on_command("fake-kick")
 async def handle_fake_kick(c: AnonClient, message: ChatMessage):
     try: text = message.text.split(maxsplit=1)[1]
-    except: IndexError: return await c.send_message(message.room_id, "Формат: /fake-kick [никнейм]")
+    except IndexError: return await c.send_message(message.room_id, "Формат: /fake-kick [никнейм]")
     await c.send_message(message.room_id, text, MESSAGE_TYPE_USER_KICKED)
 
 async def main():
