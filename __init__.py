@@ -1,2 +1,2 @@
-from .anon_client import AnonClient
+from .anon_client import *
 from .models import *
