@@ -17,7 +17,7 @@ EVENT_TYPE_MESSAGE_RECEIVED = "message-received"
 
 class WebSocketListener:
 
-    def __init__(self, rocket_id: str, rocket_token: str, mainloop: AbstractEventLoop) -> None:
+    def __init__(self, rocket_id: str, rocket_token: str, mainloop: AbstractEventLoop, debug: bool = False) -> None:
         super().__init__()
         self._conn = None
         self._id = 1
@@ -27,6 +27,7 @@ class WebSocketListener:
         self.close_required = False
         self.connection_id = None
         self.mainloop = mainloop
+        self.debug = debug
         # "cannot schedule new futures after interpreter shutdown" python 3.9-3.10 bug fix
         self.mainloop.set_default_executor(CustomExecutor())
 
@@ -97,14 +98,14 @@ class WebSocketListener:
             else: return
             if handler["payload_filter"] is not None:
                 if not handler["payload_filter"](obj): continue
-            print("WS: Running callback")
+            if self.debug: print("WS: Running callback")
             await handler["handler"](handler["client"], obj)
 
     async def start(self) -> None:
-        print("WS: Starting")
+        if self.debug: print("WS: Starting")
         await self.connect()
         await self.auth()
-        print("WS: Started")
+        if self.debug: print("WS: Started")
         while True:
             data = await self.receive_json()
             if data is None: continue
